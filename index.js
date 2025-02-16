@@ -2,25 +2,36 @@
 // TASK: import initialData
 import * as taskFunctions from "/utils/taskFunctions.js";
 import { initialData } from "/initialData.js";
+//import { getTasks } from "./utils/taskFunctions";
 
-console.log(initialData);
-console.log(taskFunctions);
+//console.log(initialData);
+//console.log(taskFunctions);
 /*************************************************************************************************************************************************
  * FIX BUGS!!!
  * **********************************************************************************************************************************************/
 
 // Function checks if local storage already has data, if not it loads initialData to localStorage
-function initializeData() {
+function initializeData(data) {
   if (!localStorage.getItem("tasks")) {
-    localStorage.setItem("tasks", JSON.stringify(initialData));
+    localStorage.setItem("tasks", JSON.stringify(data));
     localStorage.setItem("showSideBar", "true");
   } else {
     console.log("Data already exists in localStorage");
   }
 }
+initializeData(initialData);
+//console.log(localStorage);
 
 // TASK: Get elements from the DOM
-const elements = {};
+const elements = {
+  headerBoardName: document.getElementById("header-board-name"),
+  columnDivs: document.querySelectorAll(".header-board-name"),
+  filterDiv: document.getElementById("filterDiv"),
+  hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
+  themeSwitch: document.getElementById("switch"),
+  createNewTaskBtn: document.getElementById("add-new-task-btn"),
+  modalWindow: document.getElementById("new-task-modal-window"),
+};
 
 let activeBoard = "";
 
