@@ -214,19 +214,32 @@ function addTask(event) {
 
 function toggleSidebar(show) {
   if (show) {
+    //if true, sidebar display style set to block "block", buttons are also either "none" or "block" depending on which must be shown"
     elements.sideBar.style.display = "block";
-    localStorage.setItem("showSideBar", "true");
+    localStorage.setItem("showSideBar", "true"); //updating state in local storage
     elements.showSideBarBtn.style.display = "none";
     elements.hideSideBarBtn.style.display = "block";
   } else {
+    //if false, sidebar display style set to block "none"
     elements.sideBar.style.display = "none";
-    localStorage.setItem("showSideBar", "false");
+    localStorage.setItem("showSideBar", "false"); //updating state in local storage
     elements.showSideBarBtn.style.display = "block";
     elements.hideSideBarBtn.style.display = "none";
   }
 }
 
-function toggleTheme() {}
+function toggleTheme(theme) {
+  const isChecked = theme.target.checked;
+  if (isChecked) {
+    //if the theme toggle is enabled it will add the light-theme to the class list.
+    document.body.classList.add("light-theme");
+    localStorage.setItem("light-theme", "enabled"); //update to local storage
+  } else {
+    //if the toggle is disabled it will take away the light theme class.
+    document.body.classList.remove("light-theme");
+    localStorage.setItem("light-theme", "disabled"); //update to local storage
+  }
+}
 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
@@ -263,6 +276,10 @@ function init() {
   const showSidebar = localStorage.getItem("showSideBar") === "true";
   toggleSidebar(showSidebar);
   const isLightTheme = localStorage.getItem("light-theme") === "enabled";
+  //if statement added so that if the page is refreshed on light mode then the toggle switch will remain on the light theme instead of going back to dark position.
+  if (elements.themeSwitch) {
+    elements.themeSwitch.checked = isLightTheme;
+  }
   document.body.classList.toggle("light-theme", isLightTheme);
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
