@@ -5,7 +5,7 @@ import { initialData } from "/initialData.js";
 //import { getTasks } from "./utils/taskFunctions";
 
 //console.log(initialData);
-//console.log(taskFunctions);
+//console.log(taskFunctions.getTasks);
 /*************************************************************************************************************************************************
  * FIX BUGS!!!
  * **********************************************************************************************************************************************/
@@ -31,14 +31,16 @@ const elements = {
   themeSwitch: document.getElementById("switch"),
   createNewTaskBtn: document.getElementById("add-new-task-btn"),
   modalWindow: document.getElementById("new-task-modal-window"),
+  sideBar: document.getElementById("side-bar-div"),
+  showSideBarBtn: document.getElementById("show-side-bar-btn"),
 };
 
 let activeBoard = "";
 
 // Extracts unique board names from tasks
-// TASK: FIX BUGS
+// TASK: FIX BUGS/////////////////////////////////////////////I think this is done
 function fetchAndDisplayBoardsAndTasks() {
-  const tasks = getTasks();
+  const tasks = taskFunctions.getTasks();
   const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))];
   displayBoards(boards);
   if (boards.length > 0) {
@@ -48,6 +50,7 @@ function fetchAndDisplayBoardsAndTasks() {
     styleActiveBoard(activeBoard);
     refreshTasksUI();
   }
+  //console.log(activeBoard);
 }
 
 // Creates different boards in the DOM
@@ -73,22 +76,22 @@ function displayBoards(boards) {
 // Filters tasks corresponding to the board name and displays them on the DOM.
 // TASK: Fix Bugs
 function filterAndDisplayTasksByBoard(boardName) {
-  const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-  const filteredTasks = tasks.filter((task) => (task.board = boardName));
+  const tasks = taskFunctions.getTasks(); // Fetch tasks from a simulated local storage function
+  const filteredTasks = tasks.filter((task) => task.board === boardName);
 
   // Ensure the column titles are set outside of this function or correctly initialized before this function runs
 
   elements.columnDivs.forEach((column) => {
     const status = column.getAttribute("data-status");
     // Reset column content while preserving the column title
-    column.innerHTML = `<div class="column-head-div">
+    /*column.innerHTML = `<div class="column-head-div">
                           <span class="dot" id="${status}-dot"></span>
                           <h4 class="columnHeader">${status.toUpperCase()}</h4>
-                        </div>`;
+                        </div>`;*/
 
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
-
+    console.log(status);
     filteredTasks
       .filter((task) => (task.status = status))
       .forEach((task) => {
@@ -112,13 +115,13 @@ function refreshTasksUI() {
 }
 
 // Styles the active board by adding an active class
-// TASK: Fix Bugs
+// TASK: Fix Bugs //////////////////////////////////////////I think bugs are fixed
 function styleActiveBoard(boardName) {
-  document.querySelectorAll(".board-btn").foreach((btn) => {
+  document.querySelectorAll(".board-btn").forEach((btn) => {
     if (btn.textContent === boardName) {
-      btn.add("active");
+      btn.classList.add("active");
     } else {
-      btn.remove("active");
+      btn.classList.remove("active");
     }
   });
 }
@@ -166,7 +169,8 @@ function setupEventListeners() {
 
   // Show sidebar event listener
   elements.hideSideBarBtn.addEventListener("click", () => toggleSidebar(false));
-  elements.hideSideBarBtn.addEventListener("click", () => toggleSidebar(true));
+  //changed second eventListener to the showSideBarBtn
+  elements.showSideBarBtn.addEventListener("click", () => toggleSidebar(true));
 
   // Theme switch event listener
   elements.themeSwitch.addEventListener("change", toggleTheme);
@@ -179,7 +183,7 @@ function setupEventListeners() {
 
   // Add new task form submission event listener
   elements.modalWindow.addEventListener("submit", (event) => {
-    addTask(event);
+    taskFunctions.addTask(event);
   });
 }
 
@@ -208,7 +212,19 @@ function addTask(event) {
   }
 }
 
-function toggleSidebar(show) {}
+function toggleSidebar(show) {
+  if (show) {
+    elements.sideBar.style.display = "block";
+    localStorage.setItem("showSideBar", "true");
+    elements.showSideBarBtn.style.display = "none";
+    elements.hideSideBarBtn.style.display = "block";
+  } else {
+    elements.sideBar.style.display = "none";
+    localStorage.setItem("showSideBar", "false");
+    elements.showSideBarBtn.style.display = "block";
+    elements.hideSideBarBtn.style.display = "none";
+  }
+}
 
 function toggleTheme() {}
 
