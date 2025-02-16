@@ -20,12 +20,12 @@ function initializeData(data) {
   }
 }
 initializeData(initialData);
-//console.log(localStorage);
+//console.log(localStorage.tasks);
 
 // TASK: Get elements from the DOM
 const elements = {
   headerBoardName: document.getElementById("header-board-name"),
-  columnDivs: document.querySelectorAll(".header-board-name"),
+  columnDivs: document.querySelectorAll(".column-div"),
   filterDiv: document.getElementById("filterDiv"),
   hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
   themeSwitch: document.getElementById("switch"),
@@ -52,6 +52,7 @@ function fetchAndDisplayBoardsAndTasks() {
   }
   //console.log(activeBoard);
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Creates different boards in the DOM
 // TASK: Fix Bugs
@@ -72,41 +73,49 @@ function displayBoards(boards) {
     boardsContainer.appendChild(boardElement);
   });
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Filters tasks corresponding to the board name and displays them on the DOM.
 // TASK: Fix Bugs
-function filterAndDisplayTasksByBoard(boardName) {
+function filterAndDisplayTasksByBoard(boards) {
   const tasks = taskFunctions.getTasks(); // Fetch tasks from a simulated local storage function
-  const filteredTasks = tasks.filter((task) => task.board === boardName);
-
+  const filteredTasks = tasks.filter((task) => task.board === boards);
+  //console.log(tasks);
+  //console.logs(filteredTasks);
   // Ensure the column titles are set outside of this function or correctly initialized before this function runs
 
   elements.columnDivs.forEach((column) => {
     const status = column.getAttribute("data-status");
     // Reset column content while preserving the column title
-    /*column.innerHTML = `<div class="column-head-div">
+    if (status) {
+      column.innerHTML = `<div class="column-head-div">
                           <span class="dot" id="${status}-dot"></span>
                           <h4 class="columnHeader">${status.toUpperCase()}</h4>
-                        </div>`;*/
+                        </div>`;
 
-    const tasksContainer = document.createElement("div");
-    column.appendChild(tasksContainer);
-    console.log(status);
-    filteredTasks
-      .filter((task) => (task.status = status))
-      .forEach((task) => {
-        const taskElement = document.createElement("div");
-        taskElement.classList.add("task-div");
-        taskElement.textContent = task.title;
-        taskElement.setAttribute("data-task-id", task.id);
+      const tasksContainer = document.createElement("div");
+      column.appendChild(tasksContainer);
 
-        // Listen for a click event on each task and open a modal
-        taskElement.addEventListener("click", () => {
-          openEditTaskModal(task);
+      //console.log(status);
+
+      filteredTasks
+        .filter((task) => task.status === status)
+        .forEach((task) => {
+          const taskElement = document.createElement("div");
+          taskElement.classList.add("task-div");
+          taskElement.textContent = task.title;
+          taskElement.setAttribute("data-task-id", task.id);
+
+          // Listen for a click event on each task and open a modal
+          taskElement.addEventListener("click", () => {
+            openEditTaskModal(task);
+          });
+
+          tasksContainer.appendChild(taskElement);
         });
-
-        tasksContainer.appendChild(taskElement);
-      });
+    } else {
+      console.log("no status");
+    }
   });
 }
 
