@@ -33,7 +33,7 @@ const elements = {
   modalWindow: document.getElementById("new-task-modal-window"),
   sideBar: document.getElementById("side-bar-div"),
   showSideBarBtn: document.getElementById("show-side-bar-btn"),
-  editTaskModalWindow: document.getElementById(".edit-task-modal-window"),
+  editTaskModalWindow: document.querySelector(".edit-task-modal-window"),
 };
 
 let activeBoard = "";
