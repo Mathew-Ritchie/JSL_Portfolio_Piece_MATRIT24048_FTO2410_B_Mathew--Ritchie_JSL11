@@ -33,6 +33,7 @@ const elements = {
   modalWindow: document.getElementById("new-task-modal-window"),
   sideBar: document.getElementById("side-bar-div"),
   showSideBarBtn: document.getElementById("show-side-bar-btn"),
+  editTaskModal: document.getElementById("edit-task-form"),
 };
 
 let activeBoard = "";
@@ -119,12 +120,14 @@ function filterAndDisplayTasksByBoard(boards) {
   });
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 function refreshTasksUI() {
   filterAndDisplayTasksByBoard(activeBoard);
 }
 
 // Styles the active board by adding an active class
-// TASK: Fix Bugs //////////////////////////////////////////I think bugs are fixed
+// TASK: Fixed Bugs: forEach didnt have capital E and .classlist was missing from the if and else /////////////////////////////
 function styleActiveBoard(boardName) {
   document.querySelectorAll(".board-btn").forEach((btn) => {
     if (btn.textContent === boardName) {
@@ -134,9 +137,10 @@ function styleActiveBoard(boardName) {
     }
   });
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function addTaskToUI(task) {
-  const column = document.querySelector('.column-div[data-status="${task.status}"]');
+  const column = document.querySelector(`.column-div[data-status="${task.status}"]`);
   if (!column) {
     console.error(`Column not found for status: ${task.status}`);
     return;
@@ -192,7 +196,7 @@ function setupEventListeners() {
 
   // Add new task form submission event listener
   elements.modalWindow.addEventListener("submit", (event) => {
-    taskFunctions.addTask(event);
+    addTask(event);
   });
 }
 
@@ -208,10 +212,16 @@ function toggleModal(show, modal = elements.modalWindow) {
 
 function addTask(event) {
   event.preventDefault();
-
+  const titleInput = document.getElementById("title-input").value;
+  const descInput = document.getElementById("desc-input").value;
+  const statusSelect = document.getElementById("select-status").value;
   //Assign user input to the task object
-  const task = {};
-  const newTask = createNewTask(task);
+  const task = {
+    title: titleInput,
+    description: descInput,
+    status: statusSelect,
+  };
+  const newTask = taskFunctions.createNewTask(task);
   if (newTask) {
     addTaskToUI(newTask);
     toggleModal(false);
