@@ -95,6 +95,7 @@ function filterAndDisplayTasksByBoard(boards) {
                         </div>`;
 
       const tasksContainer = document.createElement("div");
+      tasksContainer.classList.add("tasks-container");
       column.appendChild(tasksContainer);
 
       //console.log(status);
@@ -156,10 +157,10 @@ function addTaskToUI(task) {
 
   const taskElement = document.createElement("div");
   taskElement.className = "task-div";
-  taskElement.textContent = task.title; // Modify as needed
+  taskElement.textContent = `${task.title}`; // Modify as needed
   taskElement.setAttribute("data-task-id", task.id);
 
-  tasksContainer.appendChild();
+  tasksContainer.appendChild(taskElement);
 }
 
 function setupEventListeners() {
@@ -220,7 +221,9 @@ function addTask(event) {
     title: titleInput,
     description: descInput,
     status: statusSelect,
+    board: activeBoard,
   };
+
   const newTask = taskFunctions.createNewTask(task);
   if (newTask) {
     addTaskToUI(newTask);
