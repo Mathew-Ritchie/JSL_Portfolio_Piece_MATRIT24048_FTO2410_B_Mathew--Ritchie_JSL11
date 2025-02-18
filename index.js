@@ -254,15 +254,23 @@ function toggleSidebar(show) {
 }
 
 function toggleTheme(theme) {
+  const logoImage = document.getElementById("logo");
   const isChecked = theme.target.checked;
   if (isChecked) {
     //if the theme toggle is enabled it will add the light-theme to the class list.
     document.body.classList.add("light-theme");
-    localStorage.setItem("light-theme", "enabled"); //update to local storage
+    localStorage.setItem("light-theme", "enabled");
+    if (logoImage) {
+      logoImage.src = "./assets/logo-light.svg";
+    } //update to local storage
   } else {
     //if the toggle is disabled it will take away the light theme class.
     document.body.classList.remove("light-theme");
-    localStorage.setItem("light-theme", "disabled"); //update to local storage
+    localStorage.setItem("light-theme", "disabled");
+    if (logoImage) {
+      //update to local storage
+      logoImage.src = "./assets/logo-dark.svg";
+    }
   }
 }
 
@@ -309,7 +317,7 @@ function saveTaskChanges(taskId) {
     board: activeBoard,
   };
   // Update task using a hlper functoin
-  taskFunctions.patchTask(taskId, updatedTask);
+  taskFunctions.putTask(taskId, updatedTask);
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModalWindow);
   refreshTasksUI();
