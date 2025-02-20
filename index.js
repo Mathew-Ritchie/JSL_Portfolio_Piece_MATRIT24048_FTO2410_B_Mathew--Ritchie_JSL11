@@ -215,6 +215,7 @@ function addTask(event) {
   const titleInput = document.getElementById("title-input").value;
   const descInput = document.getElementById("desc-input").value;
   const statusSelect = document.getElementById("select-status").value;
+
   //Assign user input to the task object
   const task = {
     title: titleInput,
@@ -224,13 +225,13 @@ function addTask(event) {
   };
 
   //createNewTask function give a new task a unique ID, and save the object data of task to the local storage array.
-  const newTask = taskFunctions.createNewTask(task);
+  const newTask = taskFunctions.createNewTask(task); //gives new task an id and pushes it to the array which is then saved in local storage.
   if (newTask) {
-    addTaskToUI(newTask);
-    toggleModal(false);
-    elements.filterDiv.style.display = "none"; // Also hide the filter overlay
-    event.target.reset();
-    refreshTasksUI();
+    addTaskToUI(newTask); //adds new task to UI.
+    toggleModal(false); // Closes add task Modal.
+    elements.filterDiv.style.display = "none"; //  Hides the filter overlay.
+    event.target.reset(); //resets the form so that when add new task button is clicked it is clear.
+    refreshTasksUI(); //refreshes the UI automatically so that the page doesnt need to be refreshed.
   }
 }
 
@@ -251,10 +252,11 @@ function toggleSidebar(show) {
 
 ///////////Toggle the theme function /////////////////////////////////////////////////////////////////
 function toggleTheme(theme) {
-  const logoImage = document.getElementById("logo");
-  const isChecked = theme.target.checked;
+  const logoImage = document.getElementById("logo"); //targets the logo
+  const isChecked = theme.target.checked; //isChecked varialble has a value of true if the checkedbox element is checked and false if it is not checked.
   if (isChecked) {
-    //if the theme toggle is enabled it will add the light-theme to the class list. And it will use the correct light logo. setting are savbed in local Storage
+    //if isChecked is true
+    //it will add the light-theme to the class list. And it will use the correct light logo. setting are savbed in local Storage
     document.body.classList.add("light-theme");
     localStorage.setItem("light-theme", "enabled");
     if (logoImage) {
@@ -298,7 +300,6 @@ function openEditTaskModal(task) {
   // Delete task using a helper function and close the task modal
   // Show the edit task modal
 }
-
 ////////// Function to save changed made in edit modal.///////////////////////////////////////
 function saveTaskChanges(taskId) {
   // Get new user inputs
