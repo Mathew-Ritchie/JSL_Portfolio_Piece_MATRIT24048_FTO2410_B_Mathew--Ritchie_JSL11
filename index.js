@@ -300,6 +300,7 @@ function openEditTaskModal(task) {
   // Delete task using a helper function and close the task modal
   // Show the edit task modal
 }
+
 ////////// Function to save changed made in edit modal.///////////////////////////////////////
 function saveTaskChanges(taskId) {
   // Get new user inputs
